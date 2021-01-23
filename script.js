@@ -1,3 +1,4 @@
+//call HTML elements
 const modalBtn = document.querySelector('.addBtn');
 const modal = document.querySelector('.modal');
 const closeModal = document.querySelector('.closeModal');
@@ -8,20 +9,17 @@ const readInput = document.querySelector('.readBtn')
 const addBook = document.querySelector('.submitBtn');
 const library = document.querySelector('.shelf');
 
-modalBtn.addEventListener('click', () => {
-    modal.classList.add('modal-active')
-});
-
-closeModal.addEventListener('click', () => {
-    modal.classList.remove('modal-active');
-})
-
+//event listeners
+modalBtn.addEventListener('click', () => modal.classList.add('modal-active'));
+closeModal.addEventListener('click', () => modal.classList.remove('modal-active'));
+addBook.addEventListener('click', addBookToLibrary);
 window.addEventListener("click", (event) => {
     if(event.target === modal) {
         modal.classList.remove('modal-active');
     }
 });
 
+//create book and stored them in an empty array
 let myLibrary = [];
 let newBook;
 
@@ -31,8 +29,6 @@ function Book(title, author, pages, read) {
     this.pages = pages;
     this.read = read;
 }
-
-addBook.addEventListener('click', addBookToLibrary);
 
 function addBookToLibrary() {
     let title = titleInput.value;
@@ -46,16 +42,18 @@ function addBookToLibrary() {
     modal.style.display = 'none';
 }
 
+//display book
 function render() {
     const library = document.querySelector(".shelf");
     const books = document.querySelectorAll(".book");
     books.forEach((book) => library.removeChild(book));
     for (let i = 0; i < myLibrary.length; i++) {
-      displayBooks(myLibrary[i]);
+      bookElements(myLibrary[i]);
     }
   }
 
-function displayBooks(book) {
+//create html elements to display
+function bookElements(book) {
     const library = document.querySelector('.shelf');
     const bookDiv = document.createElement('div');
     const titleBook = document.createElement('div');
@@ -92,6 +90,7 @@ function displayBooks(book) {
     bookDiv.appendChild(deleteBtn);
     library.appendChild(bookDiv);
 
+    //button to let user change book status to read
     readBtn.addEventListener('click', (e) => {
         if (e.target.className === 'yes') {
             e.target.className = 'no';
@@ -104,6 +103,7 @@ function displayBooks(book) {
         render();
     });
 
+    //button to delete book
     deleteBtn.addEventListener('click', () => {
         myLibrary.splice(myLibrary.indexOf(book), 1);
         pushLocalStorage();
@@ -111,10 +111,12 @@ function displayBooks(book) {
     });
 }
 
+//stored library in local storage
 function pushLocalStorage() {
     localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 }
 
+//pull library from local storage when page is refreshed
 function pullLocalStorage() {
     if (!localStorage.myLibrary) {
         render();
