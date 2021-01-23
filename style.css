@@ -8,7 +8,8 @@
 
 body {
     font-family: 'Montserrat', Helvetica, sans-serif;
-    /* min-height: 100vh; */
+    position: relative;
+    min-height: 100vh;
 }
 
 header {
@@ -59,6 +60,7 @@ header h1 {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
+    padding-bottom: 3rem;
 }
 
 .book {
@@ -100,7 +102,7 @@ header h1 {
 
 footer {
     background: #f8f5f5;
-    position: realtive;
+    position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
