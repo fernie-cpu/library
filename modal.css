@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
+
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .3s, opacity 0.5s;
+}
+
+.modal-active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: rgb(255, 255, 255);
+    width: 22rem;
+    height: 22rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: .8rem;
+    border-radius: .5rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.418), 0 0 33px rgba(0, 0, 0, 0.295);
+    position: relative;
+}
+
+.modal-content input {
+    position: relative;
+    font-size: 1.3rem;
+    box-sizing: border-box;
+    width: 100%;
+    outline: none;
+}
+
+.statusCheck {
+    width: 100%;
+    font-weight: 500;
+    font-size: 1.2rem;
+    display: flex;
+    margin: 0 .2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.statusCheck > input {
+    margin: .9rem;
+    width: 5%;
+    transform: scale(1.6);
+}
+
+.closeModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    color: #720d0a;
+    cursor: pointer;
+}
+
+.submitBtn {
+    background: #720d0a;
+    outline: none;
+    border: 1px solid #720d0a;
+    padding: .9rem;
+    color: white;
+    font-size: 1.3rem;
+    transition: all .3s ease;
+}
+
+.submitBtn:hover {
+    background: white;
+    border: 1px solid #720d0a;
+    color: #720d0a;
+    cursor: pointer;
+}
