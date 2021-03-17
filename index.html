@@ -11,6 +11,12 @@
 <body>
     <header class="header">
         <h1>Library Project</h1>
+        <div id="user-container">
+            <div hidden class="user-pic"></div>
+            <div hidden class="user-name"></div>
+            <button hidden class="signOut">Sign-out</button>
+            <button class="signIn">Sign-in with Google</button>
+        </div>
     </header>
 
     <div class="addBookBtn">
@@ -37,6 +43,31 @@
     <footer>
         <p>This project is part of <a href="https://theodinproject.com"/ target="_blank">The Odin Project</a> curriculum</p>
     </footer>
+
+    
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+    
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+    
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-database.js"></script>
+    <script>
+        let firebaseConfig = {
+            apiKey: 'AIzaSyDRTsZOz85-z6U-Op2dS4B6P4RdqELYYa0',
+            authDomain: 'library-cc926.firebaseapp.com',
+            projectId: 'library-cc926',
+            storageBucket: 'library-cc926.appspot.com',
+            messagingSenderId: '60998352106',
+            appId: '1:60998352106:web:3b7dcabfafb91af76aab93',
+            measurementId: 'G-HN57V4XJ0H',
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+    </script>
 
     <script src="script.js"></script>
 </body>
