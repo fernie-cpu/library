@@ -25,6 +25,50 @@ header h1 {
   font-size: 2.9rem;
 }
 
+#user-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  position: absolute;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+#user-container .user-pic {
+  position: relative;
+  display: inline-block;
+  background: url('/img/profile_placeholder.png');
+  background-repeat: no-repeat;
+  background-size: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+#user-container .user-name {
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+}
+
+.signOut,
+.signIn {
+  border: 1px solid #720d0a;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  background: #720d0a;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.signOut:hover,
+.signIn:hover {
+  background: white;
+  color: #720d0a;
+  border: 1px solid #720d0a;
+}
+
 .addBookBtn {
   display: flex;
   justify-content: center;
