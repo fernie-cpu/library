@@ -84,8 +84,6 @@ const addSizeToGoogleProfilePic = (url) => {
 
 initFirebaseAuth();
 
-const dbLibraryRef = firebase.database().ref('myLibrary');
-
 signBtn.addEventListener('click', signIn);
 signOutBtn.addEventListener('click', signOut);
 
@@ -102,28 +100,57 @@ class Book {
   }
 }
 
-function addBookToLibrary() {
+function addBookToLibrary(e) {
+  e.preventDefault();
   let title = titleInput.value;
   let author = authorInput.value;
   let pages = pagesInput.value;
   let read = readInput.value;
   newBook = new Book(title, author, pages, read);
   myLibrary.push(newBook);
-  dbLibraryRef.push(newBook);
-  pushLocalStorage();
+
+  // pushLocalStorage();
   render();
   modal.style.display = 'none';
 }
 
 //display book
-function render() {
+function render(book) {
   const library = document.querySelector('.shelf');
   const books = document.querySelectorAll('.book');
   books.forEach((book) => library.removeChild(book));
   for (let i = 0; i < myLibrary.length; i++) {
     bookElements(myLibrary[i]);
   }
+
+  const li = document.createElement('li');
+  const title = document.createElement('span');
+  const author = document.createElement('span');
+  const pages = document.createElement('span');
+  const read = document.createElement('span');
+
+  li.setAttribute('data-id', book.id);
+  li.classList.add('list-test');
+  title.textContent = 'Title: ' + book.data().title;
+  author.textContent = 'Author: ' + book.data().author;
+  pages.textContent = 'Pages: ' + book.data().pages;
+  read.textContent = 'Status: ' + book.data().read;
+
+  li.appendChild(title);
+  li.appendChild(author);
+  li.appendChild(pages);
+  li.appendChild(read);
+
+  library.appendChild(li);
 }
+
+db.collection('library')
+  .get()
+  .then((snapshot) => {
+    snapshot.docs.forEach((book) => {
+      render(book);
+    });
+  });
 
 //create html elements to display
 function bookElements(book) {
@@ -166,33 +193,33 @@ function bookElements(book) {
   //button to let user change book status to read
   readBtn.addEventListener('click', () => {
     book.read = !book.read;
-    pushLocalStorage();
+    // pushLocalStorage();
     render();
   });
 
   //button to delete book
   deleteBtn.addEventListener('click', () => {
     myLibrary.splice(myLibrary.indexOf(book), 1);
-    pushLocalStorage();
+    // pushLocalStorage();
     render();
   });
 }
 
 //stored library in local storage
-function pushLocalStorage() {
-  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
-}
+// function pushLocalStorage() {
+//   localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+// }
 
 //pull library from local storage when page is refreshed
-function pullLocalStorage() {
-  if (!localStorage.myLibrary) {
-    render();
-  } else {
-    let setLibrary = localStorage.getItem('myLibrary');
-    setLibrary = JSON.parse(setLibrary);
-    myLibrary = setLibrary;
-    render();
-  }
-}
+// function pullLocalStorage() {
+//   if (!localStorage.myLibrary) {
+//     render();
+//   } else {
+//     let setLibrary = localStorage.getItem('myLibrary');
+//     setLibrary = JSON.parse(setLibrary);
+//     myLibrary = setLibrary;
+//     render();
+//   }
+// }
 
-pullLocalStorage();
+// pullLocalStorage();

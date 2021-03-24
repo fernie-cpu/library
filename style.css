@@ -165,3 +165,8 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+
+.list-test {
+  display: flex;
+  flex-direction: column;
+}
