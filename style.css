@@ -38,7 +38,7 @@ header h1 {
 #user-container .user-pic {
   position: relative;
   display: inline-block;
-  background: url('/img/profile_placeholder.png');
+  background: url('./img/profile_placeholder.png');
   background-repeat: no-repeat;
   background-size: 40px;
   width: 40px;

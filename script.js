@@ -37,7 +37,9 @@ const signOut = () => {
 };
 
 const getProfilePicUrl = () => {
-  return firebase.auth().currentUser.photoURL || '/img/profile_placeholder.png';
+  return (
+    firebase.auth().currentUser.photoURL || './img/profile_placeholder.png'
+  );
 };
 
 const getUserName = () => {
