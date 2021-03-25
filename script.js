@@ -5,6 +5,7 @@ const userPic = document.querySelector('.user-pic');
 const userNameEl = document.querySelector('.user-name');
 const modalBtn = document.querySelector('.addBtn');
 const modal = document.querySelector('.modal');
+const modalForm = document.querySelector('.modal-content');
 const closeModal = document.querySelector('.closeModal');
 const titleInput = document.querySelector('.title');
 const authorInput = document.querySelector('.author');
@@ -15,10 +16,11 @@ const library = document.querySelector('.shelf');
 
 //event listeners
 modalBtn.addEventListener('click', () => modal.classList.add('modal-active'));
+
 closeModal.addEventListener('click', () =>
   modal.classList.remove('modal-active')
 );
-addBook.addEventListener('click', addBookToLibrary);
+// addBook.addEventListener('click', addBookToLibrary);
 window.addEventListener('click', (event) => {
   if (event.target === modal) {
     modal.classList.remove('modal-active');
@@ -102,19 +104,19 @@ class Book {
   }
 }
 
-function addBookToLibrary(e) {
-  e.preventDefault();
-  let title = titleInput.value;
-  let author = authorInput.value;
-  let pages = pagesInput.value;
-  let read = readInput.value;
-  newBook = new Book(title, author, pages, read);
-  myLibrary.push(newBook);
+// function addBookToLibrary(e) {
+//   e.preventDefault();
+//   let title = titleInput.value;
+//   let author = authorInput.value;
+//   let pages = pagesInput.value;
+//   let read = readInput.value;
+//   newBook = new Book(title, author, pages, read);
+//   myLibrary.push(newBook);
 
-  // pushLocalStorage();
-  render();
-  modal.style.display = 'none';
-}
+//   // pushLocalStorage();
+//   render();
+//   modal.style.display = 'none';
+// }
 
 //display book
 function render(book) {
@@ -146,6 +148,7 @@ function render(book) {
   library.appendChild(li);
 }
 
+//getting data
 db.collection('library')
   .get()
   .then((snapshot) => {
@@ -153,6 +156,18 @@ db.collection('library')
       render(book);
     });
   });
+
+// saving data
+modalForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  db.collection('library').add({
+    title: modalForm.title.value,
+    author: modalForm.author.value,
+    pages: modalForm.pages.value,
+  });
+
+  modal.classList.remove('modal-active');
+});
 
 //create html elements to display
 function bookElements(book) {
