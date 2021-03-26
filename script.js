@@ -158,13 +158,13 @@ function render(book) {
 }
 
 //getting data
-db.collection('library')
-  .get()
-  .then((snapshot) => {
-    snapshot.docs.forEach((book) => {
-      render(book);
-    });
-  });
+// db.collection('library')
+//   .get()
+//   .then((snapshot) => {
+//     snapshot.docs.forEach((book) => {
+//       render(book);
+//     });
+//   });
 
 // saving data
 modalForm.addEventListener('submit', (e) => {
@@ -178,9 +178,22 @@ modalForm.addEventListener('submit', (e) => {
   modal.classList.remove('modal-active');
 });
 
+//update UI in real-time
+db.collection('library').onSnapshot((snapshot) => {
+  let changes = snapshot.docChanges();
+  changes.forEach((change) => {
+    if (change.type === 'added') {
+      render(change.doc);
+    } else if (change.type === 'removed') {
+      let li = library.querySelector('[data-id=' + change.doc.id + ']');
+      library.removeChild(li);
+    }
+  });
+});
+
 //create html elements to display
 function bookElements(book) {
-  const library = document.querySelector('.shelf');
+  // const library = document.querySelector('.shelf');
   const bookDiv = document.createElement('div');
   const titleBook = document.createElement('div');
   const authorBook = document.createElement('div');
