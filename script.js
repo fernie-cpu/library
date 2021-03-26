@@ -132,6 +132,7 @@ function render(book) {
   const author = document.createElement('span');
   const pages = document.createElement('span');
   const read = document.createElement('span');
+  const del = document.createElement('div');
 
   li.setAttribute('data-id', book.id);
   li.classList.add('list-test');
@@ -139,13 +140,21 @@ function render(book) {
   author.textContent = 'Author: ' + book.data().author;
   pages.textContent = 'Pages: ' + book.data().pages;
   read.textContent = 'Status: ' + book.data().read;
+  del.textContent = 'X';
 
   li.appendChild(title);
   li.appendChild(author);
   li.appendChild(pages);
   li.appendChild(read);
+  li.appendChild(del);
 
   library.appendChild(li);
+
+  //delete data
+  del.addEventListener('click', (e) => {
+    let id = e.target.parentElement.getAttribute('data-id');
+    db.collection('library').doc(id).delete();
+  });
 }
 
 //getting data
