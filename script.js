@@ -28,32 +28,39 @@ window.addEventListener('click', (event) => {
 });
 
 //firebase
+
+//listen for auth status change
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log('logged in', user);
+  } else {
+    console.log('logged out');
+  }
+});
+
 const signIn = () => {
   const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-  firebase.auth().signInWithPopup(googleProvider);
+  auth.signInWithPopup(googleProvider);
 };
 
 const signOut = () => {
-  firebase.auth().signOut();
+  auth.signOut();
 };
 
 const getProfilePicUrl = () => {
-  return (
-    firebase.auth().currentUser.photoURL || './img/profile_placeholder.png'
-  );
+  return auth.currentUser.photoURL || './img/profile_placeholder.png';
 };
 
 const getUserName = () => {
-  return firebase.auth().currentUser.displayName;
+  return auth.currentUser.displayName;
 };
 
 const isUserSignedIn = () => {
-  return !!firebase.auth().currentUser;
+  return !!auth.currentUser;
 };
 
 const initFirebaseAuth = () => {
-  firebase.auth().onAuthStateChanged(authStateObserver);
+  auth.onAuthStateChanged(authStateObserver);
 };
 
 const authStateObserver = (user) => {
