@@ -32,9 +32,13 @@ window.addEventListener('click', (event) => {
 //listen for auth status change
 auth.onAuthStateChanged((user) => {
   if (user) {
-    console.log('logged in', user);
+    db.collection('library')
+      .get()
+      .then((snapshot) => {
+        setupBooks(snapshot.docs);
+      });
   } else {
-    console.log('logged out');
+    setupBooks([]);
   }
 });
 
@@ -127,51 +131,37 @@ class Book {
 
 //display book
 function render(book) {
-  const library = document.querySelector('.shelf');
-  const books = document.querySelectorAll('.book');
-  books.forEach((book) => library.removeChild(book));
-  for (let i = 0; i < myLibrary.length; i++) {
-    bookElements(myLibrary[i]);
-  }
-
-  const li = document.createElement('li');
-  const title = document.createElement('span');
-  const author = document.createElement('span');
-  const pages = document.createElement('span');
-  const read = document.createElement('span');
-  const del = document.createElement('div');
-
-  li.setAttribute('data-id', book.id);
-  li.classList.add('list-test');
-  title.textContent = 'Title: ' + book.data().title;
-  author.textContent = 'Author: ' + book.data().author;
-  pages.textContent = 'Pages: ' + book.data().pages;
-  read.textContent = 'Status: ' + book.data().read;
-  del.textContent = 'X';
-
-  li.appendChild(title);
-  li.appendChild(author);
-  li.appendChild(pages);
-  li.appendChild(read);
-  li.appendChild(del);
-
-  library.appendChild(li);
-
-  //delete data
-  del.addEventListener('click', (e) => {
-    let id = e.target.parentElement.getAttribute('data-id');
-    db.collection('library').doc(id).delete();
-  });
+  // const library = document.querySelector('.shelf');
+  // const books = document.querySelectorAll('.book');
+  // books.forEach((book) => library.removeChild(book));
+  // for (let i = 0; i < myLibrary.length; i++) {
+  //   bookElements(myLibrary[i]);
+  // }
+  // const li = document.createElement('li');
+  // const title = document.createElement('span');
+  // const author = document.createElement('span');
+  // const pages = document.createElement('span');
+  // const read = document.createElement('span');
+  // const del = document.createElement('div');
+  // li.setAttribute('data-id', book.id);
+  // li.classList.add('list-test');
+  // title.textContent = 'Title: ' + book.data().title;
+  // author.textContent = 'Author: ' + book.data().author;
+  // pages.textContent = 'Pages: ' + book.data().pages;
+  // read.textContent = 'Status: ' + book.data().read;
+  // del.textContent = 'X';
+  // li.appendChild(title);
+  // li.appendChild(author);
+  // li.appendChild(pages);
+  // li.appendChild(read);
+  // li.appendChild(del);
+  // library.appendChild(li);
+  // //delete data
+  // del.addEventListener('click', (e) => {
+  //   let id = e.target.parentElement.getAttribute('data-id');
+  //   db.collection('library').doc(id).delete();
+  // });
 }
-
-//getting data
-// db.collection('library')
-//   .get()
-//   .then((snapshot) => {
-//     snapshot.docs.forEach((book) => {
-//       render(book);
-//     });
-//   });
 
 // saving data
 modalForm.addEventListener('submit', (e) => {
@@ -184,6 +174,34 @@ modalForm.addEventListener('submit', (e) => {
 
   modal.classList.remove('modal-active');
 });
+
+//setup books
+const setupBooks = (book) => {
+  if (book.length) {
+    const bookDiv = document.createElement('div');
+    let html = '';
+    book.forEach((doc) => {
+      const books = doc.data();
+      console.log(books);
+      const li = `
+        <li class="book">
+          <div class="titleBook">${books.title}</div>
+          <div class="authorBook">Author: ${books.author}</div>
+          <div class="pagesBook">Pages: ${books.pages}</div>
+        </li>
+      `;
+      html += li;
+    });
+
+    library.appendChild(bookDiv);
+    bookDiv.classList.add('shelf');
+    bookDiv.innerHTML = html;
+  } else {
+    library.innerHTML = 'Login to view books';
+  }
+};
+
+//YOU HAVE TO CHANGE THE RULES IN THE FIRESTORE CONSOLE IN ORDER TO LET ONLY THE USER WRITE ON THE DATABASE
 
 //update UI in real-time
 db.collection('library').onSnapshot((snapshot) => {
@@ -199,57 +217,49 @@ db.collection('library').onSnapshot((snapshot) => {
 });
 
 //create html elements to display
-function bookElements(book) {
-  // const library = document.querySelector('.shelf');
-  const bookDiv = document.createElement('div');
-  const titleBook = document.createElement('div');
-  const authorBook = document.createElement('div');
-  const pagesBook = document.createElement('div');
-  const readBtn = document.createElement('button');
-  const deleteBtn = document.createElement('button');
-
-  bookDiv.classList.add('book');
-  bookDiv.setAttribute('id', myLibrary.indexOf(book));
-  if (book.read === true) {
-    readBtn.textContent = "I've read";
-    readBtn.classList.add('yes');
-  } else {
-    readBtn.textContent = "Nope, haven't read it yet";
-    readBtn.classList.add('no');
-  }
-
-  titleBook.textContent = 'Title: ' + book.title;
-  titleBook.classList.add('titleBook');
-
-  authorBook.textContent = 'Author: ' + book.author;
-  authorBook.classList.add('authorBook');
-
-  pagesBook.textContent = book.pages + ' pages';
-  pagesBook.classList.add('pagesBook');
-
-  deleteBtn.textContent = 'Delete';
-
-  bookDiv.appendChild(titleBook);
-  bookDiv.appendChild(authorBook);
-  bookDiv.appendChild(pagesBook);
-  bookDiv.appendChild(readBtn);
-  bookDiv.appendChild(deleteBtn);
-  library.appendChild(bookDiv);
-
-  //button to let user change book status to read
-  readBtn.addEventListener('click', () => {
-    book.read = !book.read;
-    // pushLocalStorage();
-    render();
-  });
-
-  //button to delete book
-  deleteBtn.addEventListener('click', () => {
-    myLibrary.splice(myLibrary.indexOf(book), 1);
-    // pushLocalStorage();
-    render();
-  });
-}
+// function bookElements(book) {
+// const library = document.querySelector('.shelf');
+//
+// const titleBook = document.createElement('div');
+// const authorBook = document.createElement('div');
+// const pagesBook = document.createElement('div');
+// const readBtn = document.createElement('button');
+// const deleteBtn = document.createElement('button');
+// bookDiv.classList.add('book');
+// bookDiv.setAttribute('id', myLibrary.indexOf(book));
+// if (book.read === true) {
+//   readBtn.textContent = "I've read";
+//   readBtn.classList.add('yes');
+// } else {
+//   readBtn.textContent = "Nope, haven't read it yet";
+//   readBtn.classList.add('no');
+// }
+// titleBook.textContent = 'Title: ' + book.title;
+// titleBook.classList.add('titleBook');
+// authorBook.textContent = 'Author: ' + book.author;
+// authorBook.classList.add('authorBook');
+// pagesBook.textContent = book.pages + ' pages';
+// pagesBook.classList.add('pagesBook');
+// deleteBtn.textContent = 'Delete';
+// bookDiv.appendChild(titleBook);
+// bookDiv.appendChild(authorBook);
+// bookDiv.appendChild(pagesBook);
+// bookDiv.appendChild(readBtn);
+// bookDiv.appendChild(deleteBtn);
+// library.appendChild(bookDiv);
+// //button to let user change book status to read
+// readBtn.addEventListener('click', () => {
+//   book.read = !book.read;
+//   // pushLocalStorage();
+//   render();
+// });
+// //button to delete book
+// deleteBtn.addEventListener('click', () => {
+//   myLibrary.splice(myLibrary.indexOf(book), 1);
+//   // pushLocalStorage();
+//   render();
+// });
+// }
 
 //stored library in local storage
 // function pushLocalStorage() {
