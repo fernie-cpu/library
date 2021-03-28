@@ -32,11 +32,9 @@ window.addEventListener('click', (event) => {
 //listen for auth status change
 auth.onAuthStateChanged((user) => {
   if (user) {
-    db.collection('library')
-      .get()
-      .then((snapshot) => {
-        setupBooks(snapshot.docs);
-      });
+    db.collection('library').onSnapshot((snapshot) => {
+      setupBooks(snapshot.docs);
+    });
   } else {
     setupBooks([]);
   }
@@ -103,17 +101,17 @@ signBtn.addEventListener('click', signIn);
 signOutBtn.addEventListener('click', signOut);
 
 //create book and stored them in an empty array
-let myLibrary = [];
-let newBook;
+// let myLibrary = [];
+// let newBook;
 
-class Book {
-  constructor(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read.checked;
-  }
-}
+// class Book {
+//   constructor(title, author, pages, read) {
+//     this.title = title;
+//     this.author = author;
+//     this.pages = pages;
+//     this.read = read.checked;
+//   }
+// }
 
 // function addBookToLibrary(e) {
 //   e.preventDefault();
@@ -130,38 +128,38 @@ class Book {
 // }
 
 //display book
-function render(book) {
-  // const library = document.querySelector('.shelf');
-  // const books = document.querySelectorAll('.book');
-  // books.forEach((book) => library.removeChild(book));
-  // for (let i = 0; i < myLibrary.length; i++) {
-  //   bookElements(myLibrary[i]);
-  // }
-  // const li = document.createElement('li');
-  // const title = document.createElement('span');
-  // const author = document.createElement('span');
-  // const pages = document.createElement('span');
-  // const read = document.createElement('span');
-  // const del = document.createElement('div');
-  // li.setAttribute('data-id', book.id);
-  // li.classList.add('list-test');
-  // title.textContent = 'Title: ' + book.data().title;
-  // author.textContent = 'Author: ' + book.data().author;
-  // pages.textContent = 'Pages: ' + book.data().pages;
-  // read.textContent = 'Status: ' + book.data().read;
-  // del.textContent = 'X';
-  // li.appendChild(title);
-  // li.appendChild(author);
-  // li.appendChild(pages);
-  // li.appendChild(read);
-  // li.appendChild(del);
-  // library.appendChild(li);
-  // //delete data
-  // del.addEventListener('click', (e) => {
-  //   let id = e.target.parentElement.getAttribute('data-id');
-  //   db.collection('library').doc(id).delete();
-  // });
-}
+// function render(book) {
+// const library = document.querySelector('.shelf');
+// const books = document.querySelectorAll('.book');
+// books.forEach((book) => library.removeChild(book));
+// for (let i = 0; i < myLibrary.length; i++) {
+//   bookElements(myLibrary[i]);
+// }
+// const li = document.createElement('li');
+// const title = document.createElement('span');
+// const author = document.createElement('span');
+// const pages = document.createElement('span');
+// const read = document.createElement('span');
+// const del = document.createElement('div');
+// li.setAttribute('data-id', book.id);
+// li.classList.add('list-test');
+// title.textContent = 'Title: ' + book.data().title;
+// author.textContent = 'Author: ' + book.data().author;
+// pages.textContent = 'Pages: ' + book.data().pages;
+// read.textContent = 'Status: ' + book.data().read;
+// del.textContent = 'X';
+// li.appendChild(title);
+// li.appendChild(author);
+// li.appendChild(pages);
+// li.appendChild(read);
+// li.appendChild(del);
+// library.appendChild(li);
+// //delete data
+// del.addEventListener('click', (e) => {
+//   let id = e.target.parentElement.getAttribute('data-id');
+//   db.collection('library').doc(id).delete();
+// });
+// }
 
 // saving data
 modalForm.addEventListener('submit', (e) => {
@@ -209,17 +207,17 @@ const setupBooks = (book) => {
 //YOU HAVE TO CHANGE THE RULES IN THE FIRESTORE CONSOLE IN ORDER TO LET ONLY THE USER WRITE ON THE DATABASE
 
 //update UI in real-time
-db.collection('library').onSnapshot((snapshot) => {
-  let changes = snapshot.docChanges();
-  changes.forEach((change) => {
-    if (change.type === 'added') {
-      render(change.doc);
-    } else if (change.type === 'removed') {
-      let li = library.querySelector('[data-id=' + change.doc.id + ']');
-      library.removeChild(li);
-    }
-  });
-});
+// db.collection('library').onSnapshot((snapshot) => {
+//   let changes = snapshot.docChanges();
+//   changes.forEach((change) => {
+//     if (change.type === 'added') {
+//       render(change.doc);
+//     } else if (change.type === 'removed') {
+//       let li = library.querySelector('[data-id=' + change.doc.id + ']');
+//       library.removeChild(li);
+//     }
+//   });
+// });
 
 //create html elements to display
 // function bookElements(book) {
