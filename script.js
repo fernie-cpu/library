@@ -166,13 +166,18 @@ function render(book) {
 // saving data
 modalForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  db.collection('library').add({
-    title: modalForm.title.value,
-    author: modalForm.author.value,
-    pages: modalForm.pages.value,
-  });
-
-  modal.classList.remove('modal-active');
+  db.collection('library')
+    .add({
+      title: modalForm.title.value,
+      author: modalForm.author.value,
+      pages: modalForm.pages.value,
+    })
+    .then(() => {
+      modal.classList.remove('modal-active');
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 });
 
 //setup books
